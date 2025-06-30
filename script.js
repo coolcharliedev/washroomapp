@@ -1,3 +1,58 @@
+const washroomConstants = [
+    {
+        floor:2,
+        gender:"f",
+        room:241,
+        offset: [295,310],
+        start:[40,0],
+        path: [
+            [75,0],
+            [75,125],
+            [0,125],
+            [0,35],
+            [40,35]
+        ]
+    },
+    {
+        floor:2,
+        gender:"a",
+        room:280,
+        offset: [1940,1025],
+        start:[5,0],
+        path: [
+            [60,5],
+            [55,45],
+            [0,40]
+        ]
+    },
+    {
+        floor:2,
+        gender:"m",
+        room:265,
+        offset: [1580,640],
+        start:[40,0],
+        path: [
+            [65,5],
+            [45,125],
+            [0,125],
+            [0,45],
+            [35,50]
+        ]
+    },
+    {
+        floor:2,
+        gender:"a",
+        room:201,
+        offset: [2235,1120],
+        start:[10,0],
+        path: [
+            [85,5],
+            [75,115],
+            [0,110]
+        ]
+    },
+]
+
 async function drawFirstFloor(){
     elm = document.getElementById('map1')
 
@@ -232,6 +287,24 @@ async function drawFirstFloor(){
     ctx.fillStyle = "blue"
 
     ctx.fill()
+
+    //washrooms
+    wrelm150 = document.getElementById('bg150')
+
+    ctx = wrelm150.getContext("2d")
+
+    ctx.beginPath()
+
+    ctx.moveTo(0,0)
+    ctx.lineTo(40,0)
+    ctx.lineTo(40,45)
+    ctx.lineTo(0,45)
+
+    ctx.closePath()
+
+    ctx.fillStyle = "blue"
+
+    ctx.fill()
 }
 
 async function drawSecondFloor(){
@@ -300,10 +373,8 @@ async function drawSecondFloor(){
 
     ctx.beginPath()
 
-    ctx.moveTo(95, 730)
-    ctx.lineTo(165, 730)
-    ctx.lineTo(165, 695)
-    ctx.lineTo(230, 695)
+    ctx.moveTo(95, 640)
+    ctx.lineTo(230, 640)
     ctx.lineTo(230, 110)
     ctx.lineTo(300, 110)
     ctx.lineTo(300, 255)
@@ -357,11 +428,11 @@ async function drawSecondFloor(){
     ctx.lineTo(710, 600)
     ctx.lineTo(290, 600)
     ctx.lineTo(290, 880)
-    ctx.lineTo(230, 880)
+    ctx.lineTo(95, 880)
+    ctx.lineTo(95, 830)
     ctx.lineTo(230, 830)
-    ctx.lineTo(165, 830)
-    ctx.lineTo(165, 800)
-    ctx.lineTo(80, 800)
+    ctx.lineTo(230, 700)
+    ctx.lineTo(95, 700)
 
     ctx.closePath()
 
@@ -376,8 +447,8 @@ async function drawSecondFloor(){
     ctx.lineTo(680, 315)
     ctx.lineTo(680, 440)
     ctx.lineTo(710, 440)
-    ctx.lineTo(710, 575)
-    ctx.lineTo(295, 575)
+    ctx.lineTo(710, 700)
+    ctx.lineTo(295, 700)
 
     ctx.closePath()
 
@@ -441,7 +512,7 @@ async function drawSecondFloor(){
 
     ctx.stroke()
     
-
+/*
     //washrooms
     wrelm241 = document.getElementById('bg241')
 
@@ -462,7 +533,26 @@ async function drawSecondFloor(){
 
     ctx.fill()
 
-    //\
+    //*/
+/*
+    wrelm280 = document.getElementById('bg280')
+
+    ctx = wrelm280.getContext("2d")
+
+    ctx.beginPath()
+
+    ctx.moveTo(5,0)
+    ctx.lineTo(60,5)
+    ctx.lineTo(55,45)
+    ctx.lineTo(0,40)
+
+    ctx.closePath()
+
+    ctx.fillStyle = "pink"
+
+    ctx.fill()
+
+    //\*//*
     wrelm265 = document.getElementById('bg265')
 
     ctx = wrelm265.getContext("2d")
@@ -481,8 +571,9 @@ async function drawSecondFloor(){
     ctx.fillStyle = "blue"
 
     ctx.fill()
-
+*/
     //\
+    /*
     wrelm201 = document.getElementById('bg201')
 
     ctx = wrelm201.getContext("2d")
@@ -498,6 +589,7 @@ async function drawSecondFloor(){
     ctx.fillStyle = "pink"
 
     ctx.fill()
+    */
 }
 
 async function drawThirdFloor(){
@@ -571,8 +663,6 @@ async function drawThirdFloor(){
     ctx.lineTo(300, 110)
     ctx.lineTo(300, 255)
     ctx.lineTo(670, 255)
-    ctx.lineTo(670, 110)
-    ctx.lineTo(790, 110)
     ctx.lineTo(790, 255)
     ctx.lineTo(1170, 255)
     ctx.lineTo(1170, 110)
@@ -581,31 +671,30 @@ async function drawThirdFloor(){
     ctx.lineTo(1360, 440)
     ctx.lineTo(1360, 575)
     ctx.lineTo(1630, 575)
-    ctx.lineTo(1650, 430)
-    ctx.lineTo(1695, 435)
-    ctx.lineTo(1680, 590)
-    ctx.lineTo(2795, 695)
-    ctx.lineTo(2790, 760)
-    ctx.lineTo(2760, 755)
-    ctx.lineTo(2760, 735)
-    ctx.lineTo(2680, 725)
-    ctx.lineTo(2678, 740)
+    ctx.lineTo(1655, 310)
+    ctx.lineTo(1995, 345)
+    ctx.lineTo(2000, 310)
+    ctx.lineTo(2080, 320)
+    ctx.lineTo(2075, 350)
+    ctx.lineTo(2055, 350)
+    ctx.lineTo(2045, 450)
+    ctx.lineTo(2710, 515)
+    
+    
+    ctx.lineTo(2695, 740)
     ctx.lineTo(2280, 705)
-    ctx.lineTo(2225, 1245)
-    ctx.lineTo(2360, 1260)
-    ctx.lineTo(2355, 1310)
-    ctx.lineTo(1550, 1230)
-    ctx.lineTo(1590, 970)
-    ctx.lineTo(1675, 975)
-    ctx.lineTo(1650, 970)
-    ctx.lineTo(1640, 1080)
-    ctx.lineTo(1630, 1185)
-    ctx.lineTo(2170, 1240)
+    ctx.lineTo(2240, 1110)
+    ctx.lineTo(2180, 1105)
+    ctx.lineTo(2190, 1030)
+    ctx.lineTo(2110, 1020)
+    ctx.lineTo(2130, 910)
+    ctx.lineTo(2200, 920)
     ctx.lineTo(2225, 700)
     ctx.lineTo(1725, 650)
-    ctx.lineTo(1675, 975)//
-    ctx.lineTo(1590, 970)//
     ctx.lineTo(1640, 640)
+    ctx.lineTo(1630, 720)
+    ctx.lineTo(1610, 720)
+    ctx.lineTo(1620, 640)
     ctx.lineTo(1555, 640)
     ctx.lineTo(1555, 620)
     ctx.lineTo(1310, 620)
@@ -635,9 +724,39 @@ async function drawThirdFloor(){
     ctx.moveTo(295, 315)
     ctx.lineTo(680, 315)
     ctx.lineTo(680, 440)
-    ctx.lineTo(710, 440)
-    ctx.lineTo(710, 575)
-    ctx.lineTo(295, 575)
+    ctx.lineTo(800, 440)
+    ctx.lineTo(800, 1200)
+    ctx.lineTo(295, 1200)
+
+    ctx.closePath()
+
+    ctx.fillStyle = "lightgray"
+
+    ctx.fill()
+
+    //
+
+    ctx.beginPath()
+
+    ctx.moveTo(1700, 360)
+    ctx.lineTo(2000, 390)
+    ctx.lineTo(1980, 620)
+    ctx.lineTo(1680, 590)
+
+    ctx.closePath()
+
+    ctx.fillStyle = "lightgray"
+
+    ctx.fill()
+
+    //
+
+    ctx.beginPath()
+
+    ctx.moveTo(2040, 490)
+    ctx.lineTo(2670, 550)
+    ctx.lineTo(2660, 680)
+    ctx.lineTo(2030, 620)
 
     ctx.closePath()
 
@@ -703,9 +822,9 @@ async function drawThirdFloor(){
     
 
     //washrooms
-    wrelm241 = document.getElementById('bg241')
+    wrelm348 = document.getElementById('bg348')
 
-    ctx = wrelm241.getContext("2d")
+    ctx = wrelm348.getContext("2d")
 
     ctx.beginPath()
 
@@ -722,19 +841,19 @@ async function drawThirdFloor(){
 
     ctx.fill()
 
-    //\
-    wrelm265 = document.getElementById('bg265')
+    //washrooms
+    wrelm360 = document.getElementById('bg360')
 
-    ctx = wrelm265.getContext("2d")
+    ctx = wrelm360.getContext("2d")
 
     ctx.beginPath()
 
     ctx.moveTo(40,0)
-    ctx.lineTo(65,5)
-    ctx.lineTo(45,125)
+    ctx.lineTo(75,0)
+    ctx.lineTo(75,125)
     ctx.lineTo(0,125)
-    ctx.lineTo(0, 45)
-    ctx.lineTo(35, 50)
+    ctx.lineTo(0, 35)
+    ctx.lineTo(40, 35)
 
     ctx.closePath()
 
@@ -742,20 +861,21 @@ async function drawThirdFloor(){
 
     ctx.fill()
 
-    //\
-    wrelm201 = document.getElementById('bg201')
+    //washrooms
+    wrelm374 = document.getElementById('bg374')
 
-    ctx = wrelm201.getContext("2d")
+    ctx = wrelm374.getContext("2d")
 
     ctx.beginPath()
 
-    ctx.moveTo(10,0)
-    ctx.lineTo(85, 5)
-    ctx.lineTo(75, 115)
-    ctx.lineTo(0, 110)
+    ctx.moveTo(0,0)
+    ctx.lineTo(60,0)
+    ctx.lineTo(50,50)
+    ctx.lineTo(0,50)
+
     ctx.closePath()
 
-    ctx.fillStyle = "pink"
+    ctx.fillStyle = "blue"
 
     ctx.fill()
 }
