@@ -823,19 +823,49 @@ async function drawWashroomLocations(){
     }
 }
 
-async function setupMapContainer(zoomlevel){
+async function zoomFr(wre){
+    wrindex = -1
+    wr = false
+
+
+    b = 0
+    while(b<washroomConstants.length){
+        if(washroomConstants[b].room == wre){
+            wrindex = b
+            wr = washroomConstants[b]
+        }
+        b++
+    }
+    if(!wr || wrindex==-1)return console.log('nothingfound')
+
+    showFloor(wr.floor)
+    setupMapContainer(3, [wr.offset[0],wr.offset[1]])
+}
+
+async function setupMapContainer(zoomlevel, shift){
+    document.getElementById('mapparentshift').style.transform = ""
+    document.getElementById('mapcont').style.transform = ""
+
+
+    console.log(shift)
     mapcontdim = [2990,1500]
 
     width = (window.innerWidth > 0) ? window.innerWidth : screen.width
 
     scaleFactor = width/mapcontdim[0]
 
-    document.getElementById('mapcont').style.transform = `scale(${scaleFactor})`
+    document.getElementById('mapwrapper').style.height = mapcontdim[1]*scaleFactor+"px"
+
+    document.getElementById('mapcont').style.transform = `scale(${scaleFactor*(((zoomlevel)||1))})`
+
+    if(shift) {
+        document.getElementById('mapparentshift').style.transform = `translate(-${(shift[0]-width/2)}px,-${(shift[1]-(mapcontdim[1]*scaleFactor/2))}px)`
+        console.log(`translate(-${(shift[0]-width/2)}px,-${(shift[1]-(mapcontdim[1]*scaleFactor/2))}px)`)
+    }
 }
 
 async function showFloor(floor){
-    contp = document.getElementById('mapcont')
-    setupMapContainer()
+    contp = document.getElementById('mapparentshift')
 
     l = 0
     while(l<contp.children.length){
@@ -846,6 +876,25 @@ async function showFloor(floor){
         }
         l++
     }
+
+    setupMapContainer()
+}
+
+async function setupWrFocusButtons(){
+    
+    elema = document.getElementById('wrbtns')
+
+    p = 0
+    while(p<washroomConstants.length){
+        nb = document.createElement("button")
+
+        nb.innerHTML = washroomConstants[p].room
+
+        nb.setAttribute('onclick', `zoomFr(${washroomConstants[p].room})`)
+
+        elema.appendChild(nb)
+        p++
+    }
 }
 
 drawFirstFloor()
@@ -855,3 +904,5 @@ drawThirdFloor()
 drawWashroomLocations()
 
 setupMapContainer()
+
+setupWrFocusButtons()
