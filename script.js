@@ -79,7 +79,7 @@ const washroomConstants = [
 
     {
         floor:3,
-        gender:"a",
+        gender:"f",
         room:348,
         offset: [295,310],
         start:[40,0],
@@ -93,7 +93,7 @@ const washroomConstants = [
     },
     {
         floor:3,
-        gender:"f",
+        gender:"b",
         room:360,
         offset: [790,310],
         start:[40,0],
@@ -107,7 +107,7 @@ const washroomConstants = [
     },
     {
         floor:3,
-        gender:"m",
+        gender:"a",
         room:374,
         offset: [1570,715],
         start:[0,0],
@@ -815,6 +815,8 @@ async function drawWashroomLocations(){
         ctj.font = "40px Arial";
         ctj.fillText(washroomConstants[i].room,10,60);
 
+        newCanvas.setAttribute('onclick', `zoomFr(${washroomConstants[i].room})`)
+
         newParentCont.appendChild(newCanvas)
 
         //console.log(document.getElementById(floorNames[(washroomConstants[i].floor)-1]))
@@ -848,9 +850,10 @@ async function setupMapContainer(zoomlevel, shift){
 
 
     console.log(shift)
-    mapcontdim = [2990,1500]
+    mapcontdim = [2990,1600]
 
     width = (window.innerWidth > 0) ? window.innerWidth : screen.width
+    width -= 80
 
     scaleFactor = width/mapcontdim[0]
 

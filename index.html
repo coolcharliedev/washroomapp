@@ -16,24 +16,29 @@
     <div id="wrbtns">
         
     </div>
-    <div id="mapwrapper" style="overflow:hidden;width:100vw;">
-        <div id="mapcont" style="position: relative;transform-origin:left center;display:block;transition:0.2s;">
-            <div style="position:relative;display:block;transition:0.2s;" id="mapparentshift">
-                <div id="firstfloor" style="display:none;position:absolute;">
-                    <!-- <img src="./firstflo.png" alt="" style="position:relative;left:-400px;top:-150px;"> -->
-                    <canvas width=2850 height=1500 id="map1" style="z-index:2;"></canvas>
-                </div>
-                <div id="secondfloor" style="display:none;position:absolute;">
-                    <!-- <img src="./secondflo.png" alt="" style="position:relative;left:-25px;top:20px;" width="2970px"> -->
-                    <canvas width=2850 height=1500 id="map2" style="z-index:2;"></canvas>
-                </div>
-                <div id="thirdfloor" style="display:none;position:absolute;">
-                    <!-- <img src="./thirdflo.png" alt="" style="position:relative;left:-60px;top:20px;" width="2990px"> -->
-                    <canvas width=2850 height=1500 id="map3" style="z-index:2;"></canvas>
+    <div style="padding:40px;box-sizing: border-box;">
+        <div style="display:flex;flex-flow:column;border:4px black solid;border-radius: 20px;overflow:hidden;">
+            <div id="mapwrapper" style="overflow:hidden;width:100%;">
+                <div id="mapcont" style="position: relative;transform-origin:left center;display:block;transition:0.5s;">
+                    <div style="position:relative;display:block;transition:0.5s;" id="mapparentshift">
+                        <div id="firstfloor" style="display:none;position:absolute;">
+                            <!-- <img src="./firstflo.png" alt="" style="position:relative;left:-400px;top:-150px;"> -->
+                            <canvas width=2850 height=1500 id="map1" style="z-index:2;"></canvas>
+                        </div>
+                        <div id="secondfloor" style="display:none;position:absolute;">
+                            <!-- <img src="./secondflo.png" alt="" style="position:relative;left:-25px;top:20px;" width="2970px"> -->
+                            <canvas width=2850 height=1500 id="map2" style="z-index:2;"></canvas>
+                        </div>
+                        <div id="thirdfloor" style="display:none;position:absolute;">
+                            <!-- <img src="./thirdflo.png" alt="" style="position:relative;left:-60px;top:20px;" width="2990px"> -->
+                            <canvas width=2850 height=1500 id="map3" style="z-index:2;"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
     
     
     <script src="./script.js"></script>
