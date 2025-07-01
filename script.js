@@ -1,5 +1,29 @@
 const washroomConstants = [
     {
+        floor:1,
+        gender:"m",
+        room:168,
+        offset: [1710,490],
+        start:[10,0],
+        path: [
+            [75,10],
+            [65,110],
+            [0,105]
+        ]
+    },
+    {
+        floor:1,
+        gender:"a",
+        room:150,
+        offset: [785,320],
+        start:[0,0],
+        path: [
+            [40,0],
+            [40,45],
+            [0,45]
+        ]
+    },
+    {
         floor:2,
         gender:"f",
         room:241,
@@ -17,7 +41,7 @@ const washroomConstants = [
         floor:2,
         gender:"a",
         room:280,
-        offset: [1940,1025],
+        offset: [1640,1025],
         start:[5,0],
         path: [
             [60,5],
@@ -51,6 +75,49 @@ const washroomConstants = [
             [0,110]
         ]
     },
+    
+
+    {
+        floor:3,
+        gender:"a",
+        room:348,
+        offset: [295,310],
+        start:[40,0],
+        path: [
+            [75,0],
+            [75,125],
+            [0,125],
+            [0,35],
+            [40,35]
+        ]
+    },
+    {
+        floor:3,
+        gender:"f",
+        room:360,
+        offset: [790,310],
+        start:[40,0],
+        path: [
+            [75,0],
+            [75,125],
+            [0,125],
+            [0,35],
+            [40,35]
+        ]
+    },
+    {
+        floor:3,
+        gender:"m",
+        room:374,
+        offset: [1570,715],
+        start:[0,0],
+        path: [
+            [60,0],
+            [50,50],
+            [0,50]
+        ]
+    },
+
 ]
 
 async function drawFirstFloor(){
@@ -270,41 +337,6 @@ async function drawFirstFloor(){
 
     ctx.stroke()
 
-    //washrooms
-    wrelm168 = document.getElementById('bg168')
-
-    ctx = wrelm168.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(10,0)
-    ctx.lineTo(75,10)
-    ctx.lineTo(65,110)
-    ctx.lineTo(0,105)
-
-    ctx.closePath()
-
-    ctx.fillStyle = "blue"
-
-    ctx.fill()
-
-    //washrooms
-    wrelm150 = document.getElementById('bg150')
-
-    ctx = wrelm150.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(0,0)
-    ctx.lineTo(40,0)
-    ctx.lineTo(40,45)
-    ctx.lineTo(0,45)
-
-    ctx.closePath()
-
-    ctx.fillStyle = "blue"
-
-    ctx.fill()
 }
 
 async function drawSecondFloor(){
@@ -378,10 +410,6 @@ async function drawSecondFloor(){
     ctx.lineTo(230, 110)
     ctx.lineTo(300, 110)
     ctx.lineTo(300, 255)
-    ctx.lineTo(670, 255)
-    ctx.lineTo(670, 110)
-    ctx.lineTo(790, 110)
-    ctx.lineTo(790, 255)
     ctx.lineTo(1170, 255)
     ctx.lineTo(1170, 110)
     ctx.lineTo(1230, 110)
@@ -511,85 +539,6 @@ async function drawSecondFloor(){
     ctx.closePath()
 
     ctx.stroke()
-    
-/*
-    //washrooms
-    wrelm241 = document.getElementById('bg241')
-
-    ctx = wrelm241.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(40,0)
-    ctx.lineTo(75,0)
-    ctx.lineTo(75,125)
-    ctx.lineTo(0,125)
-    ctx.lineTo(0, 35)
-    ctx.lineTo(40, 35)
-
-    ctx.closePath()
-
-    ctx.fillStyle = "pink"
-
-    ctx.fill()
-
-    //*/
-/*
-    wrelm280 = document.getElementById('bg280')
-
-    ctx = wrelm280.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(5,0)
-    ctx.lineTo(60,5)
-    ctx.lineTo(55,45)
-    ctx.lineTo(0,40)
-
-    ctx.closePath()
-
-    ctx.fillStyle = "pink"
-
-    ctx.fill()
-
-    //\*//*
-    wrelm265 = document.getElementById('bg265')
-
-    ctx = wrelm265.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(40,0)
-    ctx.lineTo(65,5)
-    ctx.lineTo(45,125)
-    ctx.lineTo(0,125)
-    ctx.lineTo(0, 45)
-    ctx.lineTo(35, 50)
-
-    ctx.closePath()
-
-    ctx.fillStyle = "blue"
-
-    ctx.fill()
-*/
-    //\
-    /*
-    wrelm201 = document.getElementById('bg201')
-
-    ctx = wrelm201.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(10,0)
-    ctx.lineTo(85, 5)
-    ctx.lineTo(75, 115)
-    ctx.lineTo(0, 110)
-    ctx.closePath()
-
-    ctx.fillStyle = "pink"
-
-    ctx.fill()
-    */
 }
 
 async function drawThirdFloor(){
@@ -819,65 +768,90 @@ async function drawThirdFloor(){
     ctx.closePath()
 
     ctx.stroke()
-    
-
-    //washrooms
-    wrelm348 = document.getElementById('bg348')
-
-    ctx = wrelm348.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(40,0)
-    ctx.lineTo(75,0)
-    ctx.lineTo(75,125)
-    ctx.lineTo(0,125)
-    ctx.lineTo(0, 35)
-    ctx.lineTo(40, 35)
-
-    ctx.closePath()
-
-    ctx.fillStyle = "pink"
-
-    ctx.fill()
-
-    //washrooms
-    wrelm360 = document.getElementById('bg360')
-
-    ctx = wrelm360.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(40,0)
-    ctx.lineTo(75,0)
-    ctx.lineTo(75,125)
-    ctx.lineTo(0,125)
-    ctx.lineTo(0, 35)
-    ctx.lineTo(40, 35)
-
-    ctx.closePath()
-
-    ctx.fillStyle = "blue"
-
-    ctx.fill()
-
-    //washrooms
-    wrelm374 = document.getElementById('bg374')
-
-    ctx = wrelm374.getContext("2d")
-
-    ctx.beginPath()
-
-    ctx.moveTo(0,0)
-    ctx.lineTo(60,0)
-    ctx.lineTo(50,50)
-    ctx.lineTo(0,50)
-
-    ctx.closePath()
-
-    ctx.fillStyle = "blue"
-
-    ctx.fill()
 }
 
+
+async function drawWashroomLocations(){
+    const floorNames = ['firstfloor','secondfloor','thirdfloor']
+    i = 0
+    while(i<washroomConstants.length){
+        
+        newParentCont = document.createElement('div')
+        newParentCont.style.position = 'absolute'
+        newParentCont.style.zIndex = '5'
+        newParentCont.style.left = `${washroomConstants[i].offset[0]}px`
+        newParentCont.style.top = `${washroomConstants[i].offset[1]}px`
+
+        newCanvas = document.createElement('canvas')
+
+        //console.log(newCanvas)
+
+        newCanvas.width = 200
+        newCanvas.height = 200
+
+        document.getElementById(floorNames[(washroomConstants[i].floor)-1]).appendChild(newParentCont)
+
+        ctj = newCanvas.getContext('2d')
+        //console.log(ctj)
+
+        ctj.beginPath()
+
+        
+        ctj.moveTo(washroomConstants[i].start[0], washroomConstants[i].start[1])
+        j = 0
+        while(j<washroomConstants[i].path.length){
+            //console.log(washroomConstants[i].path[j][0],washroomConstants[i].path[j][1])
+            ctj.lineTo(washroomConstants[i].path[j][0],washroomConstants[i].path[j][1])
+            j++
+        }
+
+        ctj.closePath()
+
+        ctj.fillStyle = 'black'
+
+        ctj.fill()
+
+        ctj.fillStyle = 'red'
+        ctj.font = "40px Arial";
+        ctj.fillText(washroomConstants[i].room,10,60);
+
+        newParentCont.appendChild(newCanvas)
+
+        //console.log(document.getElementById(floorNames[(washroomConstants[i].floor)-1]))
+
+        i++
+    }
+}
+
+async function setupMapContainer(zoomlevel){
+    mapcontdim = [2990,1500]
+
+    width = (window.innerWidth > 0) ? window.innerWidth : screen.width
+
+    scaleFactor = width/mapcontdim[0]
+
+    document.getElementById('mapcont').style.transform = `scale(${scaleFactor})`
+}
+
+async function showFloor(floor){
+    contp = document.getElementById('mapcont')
+    setupMapContainer()
+
+    l = 0
+    while(l<contp.children.length){
+        contp.children[l].style.display = "none"
+
+        if(l+1==floor){
+            contp.children[l].style.display = "block"
+        }
+        l++
+    }
+}
+
+drawFirstFloor()
 drawSecondFloor()
+drawThirdFloor()
+
+drawWashroomLocations()
+
+setupMapContainer()
