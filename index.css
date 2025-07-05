@@ -1,0 +1,43 @@
+#floorselection{
+    display:flex;
+    flex-flow:row;
+    width:100%;
+    padding:10px;
+    box-sizing: border-box;
+    gap:0px;
+    background-color:rgb(237, 237, 237);
+}
+
+#floorselection > button{
+    width:100%;
+    display:flex;
+    justify-content: center;
+    align-items: start;
+    font-size:14px;
+    padding:5px 15px;
+    cursor:pointer;
+    border:0px;
+    border-radius:10px;
+    background-color:rgb(237, 237, 237);
+}
+
+#floorselection >button:hover{
+    background-color:rgb(219, 219, 219);
+}
+
+#floorselection >button.selected{
+    background-color:rgb(180, 180, 180);
+}
+
+.upt{
+    font-size:12px;
+    margin-right:5px;
+
+}
+
+.washroomLabel{
+    font-family:Helvetica, Arial, sans-serif;
+    font-weight:bolder;
+    color:white;
+    font-size:20px;
+}

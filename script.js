@@ -65,7 +65,7 @@ const washroomConstants = [
     },
     {
         floor:2,
-        gender:"a",
+        gender:"f",
         room:201,
         offset: [2235,1120],
         start:[10,0],
@@ -93,7 +93,7 @@ const washroomConstants = [
     },
     {
         floor:3,
-        gender:"b",
+        gender:"m",
         room:360,
         offset: [790,310],
         start:[40,0],
@@ -330,7 +330,7 @@ async function drawFirstFloor(){
     ctx.lineTo(87,740)
 
     
-    ctx.lineWidth = 15
+    ctx.lineWidth = 20
 
 
     ctx.closePath()
@@ -799,28 +799,50 @@ async function drawWashroomLocations(){
         
         ctj.moveTo(washroomConstants[i].start[0], washroomConstants[i].start[1])
         j = 0
+
+        minx = 100000
+        maxx = -100000
+        miny = 100000
+        maxy = -100000
+
         while(j<washroomConstants[i].path.length){
-            //console.log(washroomConstants[i].path[j][0],washroomConstants[i].path[j][1])
+            if(minx>washroomConstants[i].path[j][0]) minx = washroomConstants[i].path[j][0]
+            if(maxx<washroomConstants[i].path[j][0]) maxx = washroomConstants[i].path[j][0]
+            if(miny>washroomConstants[i].path[j][1]) miny = washroomConstants[i].path[j][1]
+            if(maxy<washroomConstants[i].path[j][1]) maxy = washroomConstants[i].path[j][1]
+
             ctj.lineTo(washroomConstants[i].path[j][0],washroomConstants[i].path[j][1])
             j++
         }
 
         ctj.closePath()
 
-        ctj.fillStyle = 'black'
+        middlex = (minx+maxx)/2
+        middley = (miny+maxy)/2
+
+        newWashroomRoom = document.createElement('span')
+        newWashroomRoom.innerHTML = washroomConstants[i].room
+
+        newWashroomRoom.style.position = "absolute"
+
+        
+
+        newParentCont.appendChild(newWashroomRoom)
+
+        newWashroomRoom.classList.add('washroomLabel')
+        newWashroomRoom.style.transformOrigin = 'center center'
+        newWashroomRoom.style.transform = `translate(${middlex-(newWashroomRoom.offsetWidth/2)}px,${middley-(newWashroomRoom.offsetHeight/2)}px)`
+
+        console.log(newWashroomRoom.offsetWidth)
+
+        const basicFallbackColours = {a:"mediumpurple",f:"magenta",m:"blue"}
+        ctj.fillStyle = basicFallbackColours[washroomConstants[i].gender]||'black'
 
         ctj.fill()
-
-        ctj.fillStyle = 'red'
-        ctj.font = "40px Arial";
-        ctj.fillText(washroomConstants[i].room,10,60);
 
         newCanvas.setAttribute('onclick', `zoomFr(${washroomConstants[i].room})`)
 
         newParentCont.appendChild(newCanvas)
-
-        //console.log(document.getElementById(floorNames[(washroomConstants[i].floor)-1]))
-
         i++
     }
 }
@@ -840,6 +862,9 @@ async function zoomFr(wre){
     }
     if(!wr || wrindex==-1)return console.log('nothingfound')
 
+
+    
+    
     showFloor(wr.floor)
     setupMapContainer(3, [wr.offset[0],wr.offset[1]])
 }
@@ -862,23 +887,34 @@ async function setupMapContainer(zoomlevel, shift){
     document.getElementById('mapcont').style.transform = `scale(${scaleFactor*(((zoomlevel)||1))})`
 
     if(shift) {
-        document.getElementById('mapparentshift').style.transform = `translate(-${(shift[0]-width/2)}px,-${(shift[1]-(mapcontdim[1]*scaleFactor/2))}px)`
-        console.log(`translate(-${(shift[0]-width/2)}px,-${(shift[1]-(mapcontdim[1]*scaleFactor/2))}px)`)
+        document.getElementById('mapparentshift').style.transform = `translate(-${((shift[0]-width/2) > 0) ? (shift[0]-width/2) : 0}px,-${(shift[1]-(mapcontdim[1]*scaleFactor/2))}px)`
     }
 }
 
 async function showFloor(floor){
     contp = document.getElementById('mapparentshift')
 
+    window.localStorage.setItem('floorSelected', floor)
+
     l = 0
     while(l<contp.children.length){
-        contp.children[l].style.display = "none"
+        contp.children[l].style.visibility = "hidden"
 
         if(l+1==floor){
-            contp.children[l].style.display = "block"
+            contp.children[l].style.visibility = "unset"
         }
         l++
     }
+
+    prnbtmns = document.getElementById('floorselection')
+
+    b = 0
+    while(b<prnbtmns.children.length){
+        prnbtmns.children[b].classList.remove("selected")
+        b++
+    }
+
+    prnbtmns.children[floor-1].classList.add('selected')
 
     setupMapContainer()
 }
