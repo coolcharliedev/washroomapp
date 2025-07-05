@@ -887,11 +887,22 @@ async function setupMapContainer(zoomlevel, shift){
 }
 
 async function getOffsiteContent(){
-    return [
-        {
-            
-        }
-    ]
+    return {
+        incidents:[
+            {
+                room:256,
+                id:3851205,
+                timeline:[
+                    {
+                        date: "June 10, 23:21",
+                        type: "report",
+                        details: "Missing supplies",
+                        id: 5373543,
+                    }
+                ]
+            },
+        ]
+    }
 }
 
 async function getContent(){
