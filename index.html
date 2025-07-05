@@ -39,13 +39,12 @@
             </div>
         </div>
     </div>
-    <div>
-
-    </div>
+    <div id="listed"></div>
     <script src="./script.js"></script>
     <script>
-        window.localStorage.removeItem('floorSelected');
+        window.localStorage.removeItem('floorSelected')
         showFloor(1)
+        window.localStorage.removeItem('cachedWashroomData')
     </script>
 </body>
 </html>

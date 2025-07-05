@@ -849,8 +849,7 @@ async function drawWashroomLocations(){
 
 async function zoomFr(wre){
     wrindex = -1
-    wr = false
-
+    wr = false 
 
     b = 0
     while(b<washroomConstants.length){
@@ -862,9 +861,6 @@ async function zoomFr(wre){
     }
     if(!wr || wrindex==-1)return console.log('nothingfound')
 
-
-    
-    
     showFloor(wr.floor)
     setupMapContainer(3, [wr.offset[0],wr.offset[1]])
 }
@@ -874,7 +870,6 @@ async function setupMapContainer(zoomlevel, shift){
     document.getElementById('mapcont').style.transform = ""
 
 
-    console.log(shift)
     mapcontdim = [2990,1600]
 
     width = (window.innerWidth > 0) ? window.innerWidth : screen.width
@@ -889,6 +884,24 @@ async function setupMapContainer(zoomlevel, shift){
     if(shift) {
         document.getElementById('mapparentshift').style.transform = `translate(-${((shift[0]-width/2) > 0) ? (shift[0]-width/2) : 0}px,-${(shift[1]-(mapcontdim[1]*scaleFactor/2))}px)`
     }
+}
+
+async function getOffsiteContent(){
+    return [
+        {
+            
+        }
+    ]
+}
+
+async function getContent(){
+    contentCache = window.localStorage.getItem('cachedWashroomData')
+
+    if(!contentCache){
+        content = await getOffsiteContent()
+    }else(
+        content = JSON.parse(contentCache)
+    )
 }
 
 async function showFloor(floor){
