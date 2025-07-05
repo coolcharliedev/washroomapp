@@ -873,7 +873,7 @@ async function setupMapContainer(zoomlevel, shift){
     mapcontdim = [2990,1600]
 
     width = (window.innerWidth > 0) ? window.innerWidth : screen.width
-    width -= 80
+    width -= 100
 
     scaleFactor = width/mapcontdim[0]
 
@@ -882,7 +882,7 @@ async function setupMapContainer(zoomlevel, shift){
     document.getElementById('mapcont').style.transform = `scale(${scaleFactor*(((zoomlevel)||1))})`
 
     if(shift) {
-        document.getElementById('mapparentshift').style.transform = `translate(-${((shift[0]-width/2) > 0) ? (shift[0]-width/2) : 0}px,-${(shift[1]-(mapcontdim[1]*scaleFactor/2))}px)`
+        document.getElementById('mapparentshift').style.transform = `translate(-${((shift[0]-width/2) > 0) ? (shift[0]-width/2) : 0}px,${((-shift[1]))+150}px)`
     }
 }
 
@@ -890,14 +890,35 @@ async function getOffsiteContent(){
     return {
         incidents:[
             {
-                room:256,
+                room:280,
                 id:3851205,
                 timeline:[
                     {
                         date: "June 10, 23:21",
                         type: "report",
                         details: "Missing supplies",
+                        impact: 2,
                         id: 5373543,
+                    },
+                    {
+                        date: "June 11, 5:21",
+                        type: "confirm",
+                        details: "Issue has been confirmed by the administration",
+                        impact: 2,
+                        id: 3458532,
+                    },
+                ]
+            },
+            {
+                room:168,
+                id:4456852,
+                timeline:[
+                    {
+                        date: "July 1, 4:23",
+                        type: "report",
+                        details: "Vandalism",
+                        impact: 1,
+                        id: 3444523,
                     }
                 ]
             },
@@ -910,9 +931,13 @@ async function getContent(){
 
     if(!contentCache){
         content = await getOffsiteContent()
+
+        window.localStorage.setItem('cachedWashroomData', JSON.stringify(content))
     }else(
         content = JSON.parse(contentCache)
     )
+
+    console.log(content)
 }
 
 async function showFloor(floor){
