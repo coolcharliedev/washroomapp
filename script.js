@@ -882,7 +882,7 @@ async function setupMapContainer(zoomlevel, shift){
     document.getElementById('mapcont').style.transform = `scale(${scaleFactor*(((zoomlevel)||1))})`
 
     if(shift) {
-        document.getElementById('mapparentshift').style.transform = `translate(-${((shift[0]-width/2) > 0) ? (shift[0]-width/2) : 0}px,${((-shift[1]))+150}px)`
+        document.getElementById('mapparentshift').style.transform = `translate(-${((shift[0]-width/2) > 0) ? (shift[0]-width/2) : 0}px,${((-shift[1]))+250}px)`
     }
 }
 
