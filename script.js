@@ -916,7 +916,7 @@ async function getOffsiteContent(){
                     {
                         date: "July 1, 4:23",
                         type: "report",
-                        details: "Vandalism",
+                        details: "Severe vandalism",
                         impact: 1,
                         id: 3444523,
                     }
@@ -937,7 +937,45 @@ async function getContent(){
         content = JSON.parse(contentCache)
     )
 
-    console.log(content)
+    return content
+}
+
+async function listWashrooms(){
+    incidents = (await getContent())
+
+    incidents = incidents.incidents
+
+    updatedWashrooms = washroomConstants
+
+    selectedFloor = window.localStorage.getItem('floorSelected')
+
+    k = 0
+    while(k<incidents.length){
+        p = 0
+
+        found = false
+
+        while(p<updatedWashrooms.length){
+            
+            if(updatedWashrooms[p].room == incidents[k].room){
+                found = true
+
+                if(updatedWashrooms[p].incidents){
+                    updatedWashrooms[p].incidents.push(incidents[k])
+                    if(updatedWashrooms[p].impact > incidents[k].timeline[incidents[k].timeline.length-1].impact) updatedWashrooms[p].impact = incidents[k].timeline[incidents[k].timeline.length-1].impact
+                }else{
+                    updatedWashrooms[p].incidents = [incidents[k]]
+                    updatedWashrooms[p].impact = incidents[k].timeline[incidents[k].timeline.length-1].impact
+                }
+            }
+            p++
+        }
+
+        if(!found) return alert('a fatal issue has occurred')
+        k++
+    }
+
+    console.log(updatedWashrooms)
 }
 
 async function showFloor(floor){
