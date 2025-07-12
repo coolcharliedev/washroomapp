@@ -922,6 +922,19 @@ async function getOffsiteContent(){
                     }
                 ]
             },
+            {
+                room:168,
+                id:4458852,
+                timeline:[
+                    {
+                        date: "July 5, 4:23",
+                        type: "report",
+                        details: "Mild vandalism",
+                        impact: 2,
+                        id: 3440523,
+                    }
+                ]
+            },
         ]
     }
 }
@@ -945,9 +958,13 @@ async function listWashrooms(){
 
     incidents = incidents.incidents
 
-    updatedWashrooms = ''
+    updatedWashrooms = []
 
-    updatedWashrooms = washroomConstants
+    g = 0
+    while(g<washroomConstants.length){
+        updatedWashrooms.push(JSON.parse(JSON.stringify(washroomConstants[g])))
+        g++
+    }
 
     selectedFloor = window.localStorage.getItem('floorSelected')
 
@@ -1016,12 +1033,19 @@ async function listWashrooms(){
 
 async function renderWashroomList(data){
     const genders = {a:"All gender",f:"Girls",m:"Boys"}
-    const statusColours = ["red","orange","green"]
+    const statusColours = ["#ff4747","#ffa647","#60ff67"]
     document.getElementById('listed').innerHTML = ''
     u = 0
     while(u<data.length){
         newSectionLabel = document.createElement('span')
+        
         newSectionLabel.innerHTML = data[u].label
+
+        newSectionLabel.classList.add('sectionLabelSpan')
+        div = document.createElement('span')
+        newSectionLabel.appendChild(div)
+
+        console.log(div)
 
         document.getElementById('listed').appendChild(newSectionLabel)
 
@@ -1043,6 +1067,7 @@ async function renderWashroomList(data){
             newHeaderBox.appendChild(newStatusIndicator)
 
             newDesc = document.createElement('span')
+            newDesc.style.fontWeight = "900"
             newDesc.innerHTML = `Rm. ${data[u].list[p].room} - ${genders[data[u].list[p].gender]}`
             newHeaderBox.appendChild(newDesc)
 
@@ -1123,7 +1148,4 @@ async function setupHome(){
 
 
     await showFloor(1)
-
-
-    await listWashrooms()
 }
