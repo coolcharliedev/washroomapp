@@ -1037,12 +1037,16 @@ async function renderWashroomList(data){
     document.getElementById('listed').innerHTML = ''
     u = 0
     while(u<data.length){
-        newSectionLabel = document.createElement('span')
+        newSectionLabel = document.createElement('div')
         
-        newSectionLabel.innerHTML = data[u].label
+        newSectionLabelText = document.createElement('span')
+        newSectionLabelText.innerHTML = data[u].label
+        newSectionLabel.appendChild(newSectionLabelText)
+        newSectionLabelText.classList.add('sectionLabelText')
 
         newSectionLabel.classList.add('sectionLabelSpan')
         div = document.createElement('span')
+        div.classList.add('sectionLabelDivider')
         newSectionLabel.appendChild(div)
 
         console.log(div)

@@ -45,7 +45,7 @@
 .washroomListed{
     display:flex;
     flex-flow:column;
-    margin:10px;
+    margin:10px 40px;
     border:4px black solid;
     border-radius:10px;
     padding:20px;
@@ -71,15 +71,20 @@
 .sectionLabelSpan{
     font-size:13px;
     font-weight: 900;
+    padding:0px 40px;
     text-transform: uppercase;
     display:flex;
     font-family:Helvetica, Arial, sans-serif;
     align-items: center;
 }
 
-.sectionLabelSpan > span{
+.sectionLabelDivider{
     height:2px;
     width:100%;
     margin-left:10px;
     background-color:black;
+}
+
+.sectionLabelText{
+    flex-shrink:0;
 }
