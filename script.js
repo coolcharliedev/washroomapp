@@ -945,9 +945,15 @@ async function listWashrooms(){
 
     incidents = incidents.incidents
 
+    updatedWashrooms = ''
+
     updatedWashrooms = washroomConstants
 
     selectedFloor = window.localStorage.getItem('floorSelected')
+
+    floorWrs = []
+
+    otherWrs = []
 
     k = 0
     while(k<incidents.length){
@@ -968,14 +974,88 @@ async function listWashrooms(){
                     updatedWashrooms[p].impact = incidents[k].timeline[incidents[k].timeline.length-1].impact
                 }
             }
+
+            if(!updatedWashrooms[p]["impact"])updatedWashrooms[p].impact=3
             p++
+
         }
 
         if(!found) return alert('a fatal issue has occurred')
         k++
     }
 
-    console.log(updatedWashrooms)
+    k = 0
+    while(k<updatedWashrooms.length){
+        if(updatedWashrooms[k].floor == selectedFloor){
+            if(updatedWashrooms[k].incidents){
+                floorWrs.unshift(updatedWashrooms[k])
+            }else{
+                floorWrs.push(updatedWashrooms[k])
+            }
+        }else{
+            if(updatedWashrooms[k].incidents){
+                otherWrs.unshift(updatedWashrooms[k])
+            }else{
+                otherWrs.push(updatedWashrooms[k])
+            }
+        }
+        k++
+    }
+
+    await renderWashroomList([
+            {
+                list:floorWrs,
+                label: `Washrooms on floor ${selectedFloor}`
+            },
+            {
+                list:otherWrs,
+                label: "Other Washrooms"
+            }
+        ])
+}
+
+async function renderWashroomList(data){
+    const genders = {a:"All gender",f:"Girls",m:"Boys"}
+    const statusColours = ["red","orange","green"]
+    document.getElementById('listed').innerHTML = ''
+    u = 0
+    while(u<data.length){
+        newSectionLabel = document.createElement('span')
+        newSectionLabel.innerHTML = data[u].label
+
+        document.getElementById('listed').appendChild(newSectionLabel)
+
+        p = 0
+        while(p<data[u].list.length){
+            newWashroomBox = document.createElement('div')
+            newWashroomBox.classList.add('washroomListed')
+            document.getElementById('listed').appendChild(newWashroomBox)
+
+            newHeaderBox = document.createElement('div')
+            newHeaderBox.style.display = 'flex'
+            newHeaderBox.style.alignItems = 'center'
+            newHeaderBox.style.gap = "10px"
+            newWashroomBox.appendChild(newHeaderBox)
+
+            newStatusIndicator = document.createElement('span')
+            newStatusIndicator.classList.add('statusIndicatorBubble')
+            newStatusIndicator.style.backgroundColor = statusColours[data[u].list[p].impact-1]
+            newHeaderBox.appendChild(newStatusIndicator)
+
+            newDesc = document.createElement('span')
+            newDesc.innerHTML = `Rm. ${data[u].list[p].room} - ${genders[data[u].list[p].gender]}`
+            newHeaderBox.appendChild(newDesc)
+
+            incidentCounter = document.createElement('span')
+            incidentCounter.innerHTML = `${(data[u].list[p]["incidents"] || []).length} active incidents`
+            incidentCounter.classList.add('incidentLabel')
+            newWashroomBox.appendChild(incidentCounter)
+
+            
+            p++
+        }
+        u++
+    }
 }
 
 async function showFloor(floor){
@@ -1003,7 +1083,9 @@ async function showFloor(floor){
 
     prnbtmns.children[floor-1].classList.add('selected')
 
-    setupMapContainer()
+    await setupMapContainer()
+
+    listWashrooms()
 }
 
 async function setupWrFocusButtons(){
@@ -1023,12 +1105,25 @@ async function setupWrFocusButtons(){
     }
 }
 
-drawFirstFloor()
-drawSecondFloor()
-drawThirdFloor()
+async function setupHome(){
+    window.localStorage.setItem('floorSelected', 1)
+    
+    window.localStorage.removeItem('cachedWashroomData')
+    getContent()
 
-drawWashroomLocations()
+    await drawFirstFloor()
+    await drawSecondFloor()
+    await drawThirdFloor()
 
-setupMapContainer()
+    await drawWashroomLocations()
 
-setupWrFocusButtons()
+    await setupMapContainer()
+
+    await setupWrFocusButtons()
+
+
+    await showFloor(1)
+
+
+    await listWashrooms()
+}
