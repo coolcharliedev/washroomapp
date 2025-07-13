@@ -1080,7 +1080,19 @@ async function renderWashroomList(data){
             incidentCounter.classList.add('incidentLabel')
             newWashroomBox.appendChild(incidentCounter)
 
-            
+            newLinkActionRow = document.createElement('div')
+            newLinkActionRow.classList.add('listedActionRow')
+            newWashroomBox.appendChild(newLinkActionRow)
+
+            viewButton = document.createElement('a')
+            viewButton.innerHTML = "View on map"
+            viewButton.setAttribute('href', `javascript:zoomFr(${data[u].list[p].room})`)
+            newLinkActionRow.appendChild(viewButton)
+
+            reportButton = document.createElement('a')
+            reportButton.innerHTML = "Report Issue"
+            reportButton.setAttribute('href', `javascript:reportIssue(${data[u].list[p].room})`)
+            newLinkActionRow.appendChild(reportButton)
             p++
         }
         u++
@@ -1152,4 +1164,24 @@ async function setupHome(){
 
 
     await showFloor(1)
+}
+
+async function reportIssue(room){
+    const genders = {a:"All gender",f:"Girls",m:"Boys"}
+    v = 0
+    found = false
+    while(v<washroomConstants.length){
+        if(washroomConstants[v].room == room){
+            found = JSON.parse(JSON.stringify(washroomConstants[v]))
+        }
+        v++
+    }
+
+    if(!found) return alert('fatal issue')
+    
+    document.getElementById('washroomreport').innerHTML = `Rm. ${found.room} - ${genders[found.gender]}`
+
+    zoomFr(room)
+    document.getElementById('listed').style.display = 'none'
+    document.getElementById('floorselection').style.display = 'none'
 }
