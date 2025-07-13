@@ -923,7 +923,14 @@ async function getOffsiteContent(){
                         details: "Reported",
                         impact: 1,
                         id: 3444523,
-                    }
+                    },
+                    {
+                        date: "July 3, 4:53",
+                        type: "action",
+                        details: "The washroom has been closed while this issue is dealt with",
+                        impact: 1,
+                        id: 3444523,
+                    },
                 ]
             },
             {
@@ -1113,6 +1120,7 @@ async function renderWashroomList(data){
 
                     incidentHeader = document.createElement('span')
                     incidentHeader.style.fontSize = "18px"
+                    incidentHeader.style.fontWeight = "900"
                     
                     incidentHeader.innerHTML = data[u].list[p].incidents[y].details
                     newIncident.appendChild(incidentHeader)
@@ -1121,9 +1129,30 @@ async function renderWashroomList(data){
                     //FOR EACH ITEM ON TIMELINE
                     h = 0
                     while(h<data[u].list[p].incidents[y].timeline.length){
+                        newTimelineCont = document.createElement('div')
+                        newTimelineCont.classList.add('timelineParent')
+                        newTimelineCont.style.display = 'flex'
+                        newTimelineCont.style.gap = '10px'
+                        newTimeline.appendChild(newTimelineCont)
+
+                        timelineDot = document.createElement('span')
+                        timelineDot.classList.add('timelineDot')
+                        newTimelineCont.appendChild(timelineDot)
+
+                        timeLineText = document.createElement('div')
+                        timeLineText.style.display = 'flex'
+                        timeLineText.style.flexFlow="column"
+                        
+                        newTimelineCont.appendChild(timeLineText)
+                        
                         newTimelineItem = document.createElement('span')
                         newTimelineItem.innerHTML = data[u].list[p].incidents[y].timeline[h].details
-                        newTimeline.prepend(newTimelineItem)
+                        timeLineText.appendChild(newTimelineItem)
+
+                        newTimeLineDate = document.createElement('span')
+                        newTimeLineDate.style.fontSize = "12px"
+                        newTimeLineDate.innerHTML = data[u].list[p].incidents[y].timeline[h].date
+                        timeLineText.appendChild(newTimeLineDate)
                         h++
                     }
                     y++

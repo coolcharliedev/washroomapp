@@ -66,7 +66,7 @@ body{
 .incidentLabel{
     margin-top:5px;
     font-size:13px;
-    font-weight: 900;
+    font-weight: 500;
     text-transform: uppercase;
 }
 
@@ -118,9 +118,27 @@ body{
     margin-left:10px;
     display:flex;
     flex-flow:column;
+    gap:10px;
+}
+
+.timelineParent{
+    /*background-color:rgba(255, 0, 0, 0.191);*/
+    width:calc(100% + 21px);
+    position:relative;
+    right:21px;
 }
 
 #listed{
     display:flex;
     flex-flow:column;
+}
+
+.timelineDot{
+    height:12px;
+    width:12px;
+    border:3px white solid;
+    border-radius:50%;
+    display:block;
+    background-color:black;
+    flex-shrink: 0;
 }
