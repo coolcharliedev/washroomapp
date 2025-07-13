@@ -104,3 +104,23 @@ body{
     flex-flow:row;
     gap:20px;
 }
+
+.incidentCont{
+    display:flex;
+    flex-flow:column;
+    gap:5px;
+    margin:10px 0px;
+}
+
+.timeline{
+    border-left:4px gray solid;
+    padding-left:10px;
+    margin-left:10px;
+    display:flex;
+    flex-flow:column;
+}
+
+#listed{
+    display:flex;
+    flex-flow:column;
+}

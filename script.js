@@ -863,6 +863,8 @@ async function zoomFr(wre){
 
     showFloor(wr.floor)
     setupMapContainer(3, [wr.offset[0],wr.offset[1]])
+
+    window.scrollTo(0,0)
 }
 
 async function setupMapContainer(zoomlevel, shift){
@@ -892,11 +894,12 @@ async function getOffsiteContent(){
             {
                 room:280,
                 id:3851205,
+                details: "Missing supplies",
                 timeline:[
                     {
                         date: "June 10, 23:21",
                         type: "report",
-                        details: "Missing supplies",
+                        details: "Reported",
                         impact: 2,
                         id: 5373543,
                     },
@@ -912,11 +915,12 @@ async function getOffsiteContent(){
             {
                 room:168,
                 id:4456852,
+                details: "Severe damage to sink",
                 timeline:[
                     {
                         date: "July 1, 4:23",
                         type: "report",
-                        details: "Severe vandalism",
+                        details: "Reported",
                         impact: 1,
                         id: 3444523,
                     }
@@ -925,11 +929,12 @@ async function getOffsiteContent(){
             {
                 room:168,
                 id:4458852,
+                details:"Graffitti on mirror",
                 timeline:[
                     {
                         date: "July 5, 4:23",
                         type: "report",
-                        details: "Mild vandalism",
+                        details: "Reported",
                         impact: 2,
                         id: 3440523,
                     }
@@ -1049,8 +1054,6 @@ async function renderWashroomList(data){
         div.classList.add('sectionLabelDivider')
         newSectionLabel.appendChild(div)
 
-        console.log(div)
-
         document.getElementById('listed').appendChild(newSectionLabel)
 
         p = 0
@@ -1093,6 +1096,41 @@ async function renderWashroomList(data){
             reportButton.innerHTML = "Report Issue"
             reportButton.setAttribute('href', `javascript:reportIssue(${data[u].list[p].room})`)
             newLinkActionRow.appendChild(reportButton)
+
+            incidents = document.createElement('div')
+            incidents.style.display = 'flex'
+            incidents.style.flexFlow = 'column'
+            newWashroomBox.appendChild(incidents)
+
+            if(data[u].list[p].incidents){
+                y = 0
+                while(y<data[u].list[p].incidents.length){
+                    newIncident = document.createElement('div')
+                    incidents.appendChild(newIncident)
+                    newIncident.classList.add('incidentCont')
+                    newTimeline = document.createElement('div')
+                    newTimeline.classList.add('timeline')
+
+                    incidentHeader = document.createElement('span')
+                    incidentHeader.style.fontSize = "18px"
+                    
+                    incidentHeader.innerHTML = data[u].list[p].incidents[y].details
+                    newIncident.appendChild(incidentHeader)
+
+                    newIncident.appendChild(newTimeline)
+                    //FOR EACH ITEM ON TIMELINE
+                    h = 0
+                    while(h<data[u].list[p].incidents[y].timeline.length){
+                        newTimelineItem = document.createElement('span')
+                        newTimelineItem.innerHTML = data[u].list[p].incidents[y].timeline[h].details
+                        newTimeline.prepend(newTimelineItem)
+                        h++
+                    }
+                    y++
+                }
+            }
+            //FOR EACH INCIDENT
+            
             p++
         }
         u++
@@ -1130,7 +1168,7 @@ async function showFloor(floor){
 }
 
 async function setupWrFocusButtons(){
-    
+    return
     elema = document.getElementById('wrbtns')
 
     p = 0
@@ -1184,4 +1222,9 @@ async function reportIssue(room){
     zoomFr(room)
     document.getElementById('listed').style.display = 'none'
     document.getElementById('floorselection').style.display = 'none'
+}
+
+async function cancelReport(){
+    document.getElementById('listed').style.display = 'flex'
+    document.getElementById('floorselection').style.display = 'flex'
 }
