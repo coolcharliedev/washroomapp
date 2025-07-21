@@ -875,7 +875,19 @@ async function setupMapContainer(zoomlevel, shift){
     mapcontdim = [2990,1600]
 
     width = (window.innerWidth > 0) ? window.innerWidth : screen.width
-    width -= 100
+
+    if(width < 1100){
+        width-=100
+
+
+        document.getElementById('mapsectioncont').style.width = "unset"
+    }else{
+        width = 700
+
+        document.getElementById('mapsectioncont').style.width = "700px"
+    }
+
+
 
     scaleFactor = width/mapcontdim[0]
 
@@ -1257,3 +1269,7 @@ async function cancelReport(){
     document.getElementById('listed').style.display = 'flex'
     document.getElementById('floorselection').style.display = 'flex'
 }
+
+window.addEventListener('resize', e=>{
+    setupMapContainer()
+})
