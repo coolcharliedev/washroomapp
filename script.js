@@ -1263,6 +1263,8 @@ async function reportIssue(room){
     zoomFr(room)
     document.getElementById('listed').style.display = 'none'
     document.getElementById('floorselection').style.display = 'none'
+
+    document.getElementById('repo').style.display = "flex"
 }
 
 async function cancelReport(){
