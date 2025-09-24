@@ -917,17 +917,25 @@ async function propagateData(data){
     console.log(data)
     incidents = []
     while(l<data.rows.length){
-        incidents.push({
-            room: data.rows[l].c[0].v,
-            details: data.rows[l].c[1].v,
-            timeline: [
-                {
-                    date: new Date(data.rows[l].c[3].f).toLocaleDateString(),
-                    details: data.rows[l].c[2].v,
-                    impact: data.rows[l].c[4].v[0]
-                }
-            ]
-        })
+        if(!(data.rows[l].c[0] && data.rows[l].c[1] && data.rows[l].c[2] && data.rows[l].c[3] && data.rows[l].c[4])){
+            console.error("An incident could not be parsed")
+        }else{
+            newinc = {
+                room: data.rows[l].c[0].v,
+                details: data.rows[l].c[1].v,
+                timeline: [
+                    {
+                        date: new Date(data.rows[l].c[3].f).toLocaleDateString(),
+                        details: data.rows[l].c[2].v,
+                        impact: data.rows[l].c[4].v[0]
+                    }
+                ]
+            }
+
+            incidents.push(newinc)
+        }
+        
+        console.log(l)
         l++
     }
 
