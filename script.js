@@ -965,67 +965,6 @@ async function getOffsiteContent(){
     oReq.send();
 
     return []
-    //example data
-    return {
-        incidents:[
-            {
-                room:280,
-                id:3851205,
-                details: "Missing supplies",
-                timeline:[
-                    {
-                        date: "June 10, 23:21",
-                        type: "report",
-                        details: "Reported",
-                        impact: 2,
-                        id: 5373543,
-                    },
-                    {
-                        date: "June 11, 5:21",
-                        type: "confirm",
-                        details: "Issue has been confirmed by the administration",
-                        impact: 2,
-                        id: 3458532,
-                    },
-                ]
-            },
-            {
-                room:168,
-                id:4456852,
-                details: "Severe damage to sink",
-                timeline:[
-                    {
-                        date: "July 1, 4:23",
-                        type: "report",
-                        details: "Reported",
-                        impact: 1,
-                        id: 3444523,
-                    },
-                    {
-                        date: "July 3, 4:53",
-                        type: "action",
-                        details: "The washroom has been closed while this issue is dealt with",
-                        impact: 1,
-                        id: 3444523,
-                    },
-                ]
-            },
-            {
-                room:168,
-                id:4458852,
-                details:"Graffitti on mirror",
-                timeline:[
-                    {
-                        date: "July 5, 4:23",
-                        type: "report",
-                        details: "Reported",
-                        impact: 2,
-                        id: 3440523,
-                    }
-                ]
-            },
-        ]
-    }
 }
 
 async function getContent(){
@@ -1053,7 +992,9 @@ async function listWashrooms(){
 
     g = 0
     while(g<washroomConstants.length){
-        updatedWashrooms.push(JSON.parse(JSON.stringify(washroomConstants[g])))
+        newPush = JSON.parse(JSON.stringify(washroomConstants[g]))
+        newPush.impact = 3
+        updatedWashrooms.push(newPush)
         g++
     }
 
@@ -1064,6 +1005,11 @@ async function listWashrooms(){
     otherWrs = []
 
     k = 0
+
+    console.log(incidents)
+    if(incidents.length == 0 || incidents[0].room == 'Room #'){
+        incidents = []
+    }
     while(k<incidents.length){
         p = 0
 
@@ -1082,8 +1028,6 @@ async function listWashrooms(){
                     updatedWashrooms[p].impact = incidents[k].timeline[incidents[k].timeline.length-1].impact
                 }
             }
-
-            if(!updatedWashrooms[p]["impact"])updatedWashrooms[p].impact=3
             p++
 
         }
@@ -1357,6 +1301,8 @@ async function reportIssue(room){
 async function cancelReport(){
     document.getElementById('listed').style.display = 'flex'
     document.getElementById('floorselection').style.display = 'flex'
+
+    document.getElementById('repo').style.display = 'none'
 }
 
 window.addEventListener('resize', e=>{

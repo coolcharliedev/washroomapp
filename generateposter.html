@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{
+            font-family:Helvetica, Arial, sans-serif;
+        }
+        #reqList{
+            display:flex;
+            flex-flow:column;
+            gap:10px;
+        }
+
+        #reqList > div{
+            display:flex;
+            flex-flow:row;
+            justify-content: space-between;
+        }
+
+        #reqList > div > div{
+            display:flex;
+            flex-flow:row;
+            gap:10px;
+        }
+
+        #posters{
+            display:none;
+        }
+
+        @media print {
+            header, footer {
+                display: none;
+            }
+            #reqList{
+                display:none;
+            }
+            #button{
+                display:none;
+            }
+            #posters{
+                display:flex;
+                flex-flow:column;
+            }
+        }
+    </style>
+    <title>Generate Washroom Poster</title>
+</head>
+<body>
+    <div id="reqList">
+
+    </div>
+    <button onclick="generatePosters()" id="button">Print</button>
+    <div id="posters">
+
+    </div>
+    <script src="./script.js"></script>
+    <script src="./qrcode.js"></script>
+    <script>
+        async function setupSelector(){
+            reqList = document.getElementById("reqList")
+
+            i = 0
+            while(i<washroomConstants.length){
+                newRow = document.createElement('div')
+                reqList.appendChild(newRow)
+
+                newRoom = document.createElement('span')
+                newRoom.innerHTML = washroomConstants[i].room
+                newRow.appendChild(newRoom)
+
+                newActionRow = document.createElement('div')
+                newRow.appendChild(newActionRow)
+
+                newMinus = document.createElement("button")
+                newMinus.innerHTML = "-"
+                newMinus.setAttribute('onclick', `editQuantity(this, '-')`)
+
+                newQty = document.createElement('span')
+                newQty.innerHTML = "0"
+
+                newPlus = document.createElement('button')
+                newPlus.innerHTML = "+"
+                newPlus.setAttribute('onclick', `editQuantity(this, '+')`)
+
+
+                newActionRow.appendChild(newMinus)
+                newActionRow.appendChild(newQty)
+                newActionRow.appendChild(newPlus)
+                i++
+            }
+        }
+
+        async function editQuantity(element, amount){
+            if(amount == "-"){
+                if(element.parentElement.children[1].innerHTML!="0"){
+                    element.parentElement.children[1].innerHTML = parseInt(element.parentElement.children[1].innerHTML)-1
+                }
+            }else{
+
+                element.parentElement.children[1].innerHTML = parseInt(element.parentElement.children[1].innerHTML)+1
+            }
+        }
+
+        async function generatePosters(){
+            selector = document.getElementById('reqList').children
+            element = document.getElementById('posters')
+            
+            printList = []
+
+            i = 0
+            while(i<selector.length){
+
+                j = 0
+                while(j<parseInt(selector[i].children[1].children[1].innerHTML)){
+
+                    printList.push(washroomConstants[i].room)
+                    j++
+                }
+                i++
+            }
+
+            console.log(printList)
+            element.innerHTML = ''
+
+
+            
+            i = 0
+            while(i<printList.length){
+                newPoster = document.createElement("div")
+
+                //newPoster.style.height = "11in"
+                //newPoster.style.width = "8.5in"
+                newPoster.style.padding = "40px"
+                newPoster.style.display = "flex"
+                newPoster.style.flexFlow = "column"
+
+                element.appendChild(newPoster)
+
+                newTitle = document.createElement("span")
+                newTitle.innerHTML = "See something wrong?"
+                newTitle.style.fontSize = "70px"
+                newTitle.style.fontWeight = "bolder"
+
+                newWords = document.createElement('span')
+                newWords.innerHTML = "<br>Scan the QR code or visit sac.wtcs.ca to submit a report about this washroom."
+                newWords.style.fontSize = "35px"
+                newWords.style.marginTop = "30px"
+                
+
+                newPoster.appendChild(newTitle)
+                newPoster.appendChild(newWords)
+
+                links = document.createElement('div')
+                text = document.createElement("div")
+                newPoster.appendChild(links)
+
+                newQr = document.createElement('div')
+                new QRCode(newQr, {
+                    text: `https://washroomapp.vercel.app/?rpt=${printList[i]}`,
+                    width: 90,
+                    height: 90,
+                })
+                links.appendChild(newQr)
+
+                box = document.createElement('div')
+                box.style.fontSize = "35px"
+                box.style.border = "1px black solid"
+                box.style.padding = "15px"
+                box.style.textAlign = 'center'
+                box.innerHTML = printList[i]
+
+                links.style.justifyContent = 'start'
+                links.style.gap = "50px"
+                links.style.marginTop = "50px"
+
+                links.appendChild(text)
+
+                text.appendChild(box)
+
+                footer = document.createElement('span')
+                footer.innerHTML = `Visit sac.wtcs.ca`
+                text.appendChild(footer)
+
+                text.style.display = 'flex'
+                text.style.flexFlow = "column"
+                text.style.alignItems = 'center'
+
+                links.style.display = 'flex'
+                links.style.flexFlow = "row"
+                links.style.alignItems = 'center'
+                links.style.breakAfter = 'page'
+
+                i++
+            }
+
+            print()
+        }
+
+        setupSelector()
+
+        //new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
+    </script>
+</body>
+</html>
