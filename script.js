@@ -927,7 +927,7 @@ async function propagateData(data){
                     {
                         date: new Date(data.rows[l].c[3].f).toLocaleDateString(),
                         details: data.rows[l].c[2].v,
-                        impact: data.rows[l].c[4].v[0]
+                        impact: (data.rows[l].c[4].v || "3")[0]
                     }
                 ]
             }
