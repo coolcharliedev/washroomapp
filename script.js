@@ -108,6 +108,18 @@ const washroomConstants = [
     {
         floor:3,
         gender:"a",
+        room:372,
+        offset: [1570,650],
+        start:[5,0],
+        path: [
+            [48,0],
+            [43,35],
+            [0,35]
+        ]
+    },
+    {
+        floor:3,
+        gender:"f",
         room:374,
         offset: [1570,715],
         start:[0,0],
@@ -183,7 +195,7 @@ async function drawFirstFloor(){
 
 
     ctx.closePath()
-
+ 
     ctx.stroke()
 
     ctx.fill()
@@ -900,7 +912,52 @@ async function setupMapContainer(zoomlevel, shift){
     }
 }
 
+async function propagateData(data){
+    l = 0
+    console.log(data)
+    incidents = []
+    while(l<data.rows.length){
+        incidents.push({
+            room: data.rows[l].c[0].v,
+            details: data.rows[l].c[1].v,
+            timeline: [
+                {
+                    date: new Date(data.rows[l].c[3].f).toLocaleDateString(),
+                    details: data.rows[l].c[2].v,
+                    impact: data.rows[l].c[4].v[0]
+                }
+            ]
+        })
+        l++
+    }
+
+    incidents = {
+        incidents:incidents
+    }
+
+    window.localStorage.setItem('cachedWashroomData', JSON.stringify(incidents))
+
+    setupHome()
+}
+
 async function getOffsiteContent(){
+    function reqListener () {
+        var jsonString = this.responseText.match(/(?<="table":).*(?=}\);)/g)[0];
+        var json = JSON.parse(jsonString);
+        
+        propagateData(json)
+    }
+      
+    var id = '1xoXR5qm1s603CVKMuwqwGrbxTPRD-2Kb-vF_ElV0PIc';
+    var gid = '0';
+    var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+    var oReq = new XMLHttpRequest();
+    oReq.onload = reqListener;
+    oReq.open("get", url, true);
+    oReq.send();
+
+    return []
+    //example data
     return {
         incidents:[
             {
@@ -965,6 +1022,7 @@ async function getOffsiteContent(){
 
 async function getContent(){
     contentCache = window.localStorage.getItem('cachedWashroomData')
+    console.log(contentCache)
 
     if(!contentCache){
         content = await getOffsiteContent()
@@ -974,6 +1032,7 @@ async function getContent(){
         content = JSON.parse(contentCache)
     )
 
+    console.log(content)
     return content
 }
 
@@ -1225,10 +1284,13 @@ async function setupWrFocusButtons(){
     }
 }
 
+async function beginSetup(){
+    getOffsiteContent()
+}
+
 async function setupHome(){
     window.localStorage.setItem('floorSelected', 1)
-    
-    window.localStorage.removeItem('cachedWashroomData')
+
     getContent()
 
     await drawFirstFloor()
