@@ -1313,10 +1313,25 @@ async function setupHome(){
 
 
     await showFloor(1)
+
+    await checkForSearchQuery()
+}
+
+async function checkForSearchQuery(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get('rpt');
+
+
+    if(!myParam) return
+
+    reportIssue(myParam)
+
+    
 }
 
 async function reportIssue(room){
     const genders = {a:"All gender",f:"Girls",m:"Boys"}
+    altgenders = {a:"All+gender",f:"Girls",m:"Boys"}
     v = 0
     found = false
     while(v<washroomConstants.length){
@@ -1326,9 +1341,11 @@ async function reportIssue(room){
         v++
     }
 
-    if(!found) return alert('fatal issue')
+    if(!found) return alert('An issue occurred while processing your requrest')
     
     document.getElementById('washroomreport').innerHTML = `Rm. ${found.room} - ${genders[found.gender]}`
+
+    document.getElementById('extbutton').setAttribute('onclick', `location = 'https://docs.google.com/forms/d/e/1FAIpQLSdjEIWMrOZxok97xVB6F32aCAOX46S-5U2H8btVfB5Kei205A/viewform?usp=pp_url&entry.305777253=${found.room}+-+${altgenders[found.gender]}'`)
 
     zoomFr(room)
     document.getElementById('listed').style.display = 'none'
