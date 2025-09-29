@@ -14,7 +14,7 @@
         <div style="display:flex;flex-flow:column;">
             <span style="font-size:20px;font-weight:500;">WTCS Washroom Status</span>
             <div style="display:flex;flex-flow:row;align-items: center;gap:5px;">
-                <span style="background-color:red;padding:2px 5px;color:white;border-radius:5px;font-weight:600;">DEMO</span>
+                <span style="background-color:red;padding:2px 5px;color:white;border-radius:5px;font-weight:600;">BETA</span>
                 <span>Experimental version 4887e5a</span>
             </div>
         </div>
@@ -50,11 +50,14 @@
                 </div>
             </div>
         </div>
-        <div style="display:flex;flex-flow:column;">
+        <div style="display:flex;flex-flow:column;align-self:stretch;width:100%;">
             <div id="listed"></div>
-            <div id="repo" style="display:none;flex-flow:column;">
+            <div id="repo" style="display:none;flex-flow:column;padding-right:40px;">
                 <a href="javascript:cancelReport()">Cancel Report</a>
-                <div style="display:flex;flex-flow:column;gap:20px;box-sizing: border-box;">
+                <div class="betanotice">
+                    Please note that this system is still in development. As we test the system, only selected participants are able to submit reports. Thank you for your patience as we work on this project. At the final stage of your submission, you will be required to submit the provided beta test password.
+                </div>
+                <div style="display:flex;flex-flow:column;gap:20px;box-sizing: border-box;margin-top:10px;">
                     <span style="font-family:Helvetica, Arial, sans-serif;font-size:20px;font-weight:900;">Report an issue with </span>
                     <span class="washroomSelection" id="washroomreport" style="box-sizing: border-box;">??</span>
                 </div>
