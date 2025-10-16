@@ -132,6 +132,8 @@ const washroomConstants = [
 
 ]
 
+//FUNCTIONS TO CREATE MAP USING HTML CANVAS
+
 async function drawFirstFloor(){
     elm = document.getElementById('map1')
 
@@ -782,12 +784,13 @@ async function drawThirdFloor(){
     ctx.stroke()
 }
 
+//DRAW WASHROOM LOCATIONS AND ADD HTML ELEMENT
 
 async function drawWashroomLocations(){
     const floorNames = ['firstfloor','secondfloor','thirdfloor']
     i = 0
     while(i<washroomConstants.length){
-        
+        //create containing div
         newParentCont = document.createElement('div')
         newParentCont.style.position = 'absolute'
         newParentCont.style.zIndex = '5'
@@ -796,21 +799,22 @@ async function drawWashroomLocations(){
 
         newCanvas = document.createElement('canvas')
 
-        //console.log(newCanvas)
+        //create canvas inside container
 
         newCanvas.width = 200
         newCanvas.height = 200
 
         document.getElementById(floorNames[(washroomConstants[i].floor)-1]).appendChild(newParentCont)
 
+        //draw washroom in canvas
         ctj = newCanvas.getContext('2d')
-        //console.log(ctj)
-
+        
         ctj.beginPath()
-
         
         ctj.moveTo(washroomConstants[i].start[0], washroomConstants[i].start[1])
         j = 0
+
+        //mathematically find middle of washroom element
 
         minx = 100000
         maxx = -100000
@@ -832,12 +836,12 @@ async function drawWashroomLocations(){
         middlex = (minx+maxx)/2
         middley = (miny+maxy)/2
 
+        //create text label
+
         newWashroomRoom = document.createElement('span')
         newWashroomRoom.innerHTML = washroomConstants[i].room
 
         newWashroomRoom.style.position = "absolute"
-
-        
 
         newParentCont.appendChild(newWashroomRoom)
 
@@ -845,7 +849,7 @@ async function drawWashroomLocations(){
         newWashroomRoom.style.transformOrigin = 'center center'
         newWashroomRoom.style.transform = `translate(${middlex-(newWashroomRoom.offsetWidth/2)}px,${middley-(newWashroomRoom.offsetHeight/2)}px)`
 
-        console.log(newWashroomRoom.offsetWidth)
+        //colour in washroom
 
         const basicFallbackColours = {a:"mediumpurple",f:"magenta",m:"blue"}
         ctj.fillStyle = basicFallbackColours[washroomConstants[i].gender]||'black'
@@ -860,6 +864,7 @@ async function drawWashroomLocations(){
 }
 
 async function zoomFr(wre){
+    // given washroom room number, call map setup function based off constant washroom offset
     wrindex = -1
     wr = false 
 
@@ -880,29 +885,32 @@ async function zoomFr(wre){
 }
 
 async function setupMapContainer(zoomlevel, shift){
+    //remove transformations from map stuff
     document.getElementById('mapparentshift').style.transform = ""
     document.getElementById('mapcont').style.transform = ""
 
 
+    //ORIGINAL map container dimensions
     mapcontdim = [2990,1600]
 
     width = (window.innerWidth > 0) ? window.innerWidth : screen.width
 
-    if(width < 1100){
+    //change map object width if
+    if(width < 1100){//ON MOBILE
         width-=100
 
 
         document.getElementById('mapsectioncont').style.width = "unset"
-    }else{
+    }else{//ON DESKTOP
         width = 700
 
         document.getElementById('mapsectioncont').style.width = "700px"
     }
 
-
-
+    //determine scale factor
     scaleFactor = width/mapcontdim[0]
 
+    //add zoom and offset to map stuff
     document.getElementById('mapwrapper').style.height = mapcontdim[1]*scaleFactor+"px"
 
     document.getElementById('mapcont').style.transform = `scale(${scaleFactor*(((zoomlevel)||1))})`
@@ -913,13 +921,18 @@ async function setupMapContainer(zoomlevel, shift){
 }
 
 async function propagateData(data){
+    //PARSE GOOGLE SHEET DATA INTO READABLE ARRAY
     l = 0
-    console.log(data)
+
     incidents = []
+
+    //through each row
     while(l<data.rows.length){
+        //if there is an unset cell, skip row
         if(!(data.rows[l].c[0] && data.rows[l].c[1] && data.rows[l].c[2] && data.rows[l].c[3] && data.rows[l].c[4])){
             console.error("An incident could not be parsed")
         }else{
+            //add parsed data to array
             newinc = {
                 room: data.rows[l].c[0].v,
                 details: data.rows[l].c[1].v,
@@ -935,7 +948,6 @@ async function propagateData(data){
             incidents.push(newinc)
         }
         
-        console.log(l)
         l++
     }
 
@@ -943,34 +955,44 @@ async function propagateData(data){
         incidents:incidents
     }
 
+    //add data to cache
     window.localStorage.setItem('cachedWashroomData', JSON.stringify(incidents))
 
+    //setup homepage
     setupHome()
 }
 
 async function getOffsiteContent(){
+    //GET GOOGLE SHEET DATA
     function reqListener () {
+        //ONCE REQUEST FULFILLED
         var jsonString = this.responseText.match(/(?<="table":).*(?=}\);)/g)[0];
         var json = JSON.parse(jsonString);
         
+        //pass off to above function
         propagateData(json)
     }
-      
+    
+    //NON PRIVATE GOOGLE SHEET INFORMATION
     var id = '1xoXR5qm1s603CVKMuwqwGrbxTPRD-2Kb-vF_ElV0PIc';
     var gid = '0';
     var url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json&tq&gid='+gid;
+
+    //create and send request
     var oReq = new XMLHttpRequest();
     oReq.onload = reqListener;
     oReq.open("get", url, true);
     oReq.send();
 
+    //return empty information, will be setup later by propagateData()
     return []
 }
 
 async function getContent(){
+    //general function to get washroom incident data
     contentCache = window.localStorage.getItem('cachedWashroomData')
-    console.log(contentCache)
-
+    
+    //if no info stored in cache
     if(!contentCache){
         content = await getOffsiteContent()
 
@@ -979,11 +1001,11 @@ async function getContent(){
         content = JSON.parse(contentCache)
     )
 
-    console.log(content)
     return content
 }
 
 async function listWashrooms(){
+    //GET CONTENT
     incidents = (await getContent())
 
     incidents = incidents.incidents
@@ -991,6 +1013,7 @@ async function listWashrooms(){
     updatedWashrooms = []
 
     g = 0
+    //add each washroom from washroom constants to list with default impact value
     while(g<washroomConstants.length){
         newPush = JSON.parse(JSON.stringify(washroomConstants[g]))
         newPush.impact = 3
@@ -998,6 +1021,7 @@ async function listWashrooms(){
         g++
     }
 
+    //get currently viewing floor
     selectedFloor = window.localStorage.getItem('floorSelected')
 
     floorWrs = []
@@ -1006,25 +1030,33 @@ async function listWashrooms(){
 
     k = 0
 
-    console.log(incidents)
+    //if there are no incidents or if google sheets returned the inital header row
     if(incidents.length == 0 || incidents[0].room == 'Room #'){
         incidents = []
     }
+
+    //for each incident
     while(k<incidents.length){
         p = 0
 
         found = false
 
         while(p<updatedWashrooms.length){
+            //go through all washrooms in list and add the google sheets incidents associated to each washroom
             
             if(updatedWashrooms[p].room == incidents[k].room){
                 found = true
 
+                //if incidents have already been added
                 if(updatedWashrooms[p].incidents){
+                    //add a new one
                     updatedWashrooms[p].incidents.push(incidents[k])
+                    //insure the overall impact level is equal to the worst impact level of all incidents
                     if(updatedWashrooms[p].impact > incidents[k].timeline[incidents[k].timeline.length-1].impact) updatedWashrooms[p].impact = incidents[k].timeline[incidents[k].timeline.length-1].impact
                 }else{
+                    //create incidents array under washroom
                     updatedWashrooms[p].incidents = [incidents[k]]
+                    //set overall impact level to incident impact level
                     updatedWashrooms[p].impact = incidents[k].timeline[incidents[k].timeline.length-1].impact
                 }
             }
@@ -1032,12 +1064,15 @@ async function listWashrooms(){
 
         }
 
-        if(!found) return alert('a fatal issue has occurred')
+        //this would only happen if a user entered an incorrect washroom room number, which is impossible
+        if(!found) console.error('a fatal issue has occurred while parsing information')
         k++
     }
 
     k = 0
+    //go through each washroom
     while(k<updatedWashrooms.length){
+        //if it is on the selected floor, add it to the selected floor list
         if(updatedWashrooms[k].floor == selectedFloor){
             if(updatedWashrooms[k].incidents){
                 floorWrs.unshift(updatedWashrooms[k])
@@ -1045,6 +1080,7 @@ async function listWashrooms(){
                 floorWrs.push(updatedWashrooms[k])
             }
         }else{
+            //if it is not, add it to the other list
             if(updatedWashrooms[k].incidents){
                 otherWrs.unshift(updatedWashrooms[k])
             }else{
@@ -1054,6 +1090,7 @@ async function listWashrooms(){
         k++
     }
 
+    //send list to other function
     await renderWashroomList([
             {
                 list:floorWrs,
@@ -1067,11 +1104,17 @@ async function listWashrooms(){
 }
 
 async function renderWashroomList(data){
+    //constants
     const genders = {a:"All gender",f:"Girls",m:"Boys"}
     const statusColours = ["#ff4747","#ffa647","#60ff67"]
+
+    //remove current list
     document.getElementById('listed').innerHTML = ''
     u = 0
+
+    //for each washroom
     while(u<data.length){
+        //add header
         newSectionLabel = document.createElement('div')
         
         newSectionLabelText = document.createElement('span')
@@ -1086,6 +1129,7 @@ async function renderWashroomList(data){
 
         document.getElementById('listed').appendChild(newSectionLabel)
 
+        //add html data for other information
         p = 0
         while(p<data[u].list.length){
             newWashroomBox = document.createElement('div')
@@ -1132,6 +1176,8 @@ async function renderWashroomList(data){
             incidents.style.flexFlow = 'column'
             newWashroomBox.appendChild(incidents)
 
+
+            //add each incident
             if(data[u].list[p].incidents){
                 y = 0
                 while(y<data[u].list[p].incidents.length){
@@ -1181,8 +1227,6 @@ async function renderWashroomList(data){
                     y++
                 }
             }
-            //FOR EACH INCIDENT
-            
             p++
         }
         u++
@@ -1190,11 +1234,14 @@ async function renderWashroomList(data){
 }
 
 async function showFloor(floor){
+    //get html elements
     contp = document.getElementById('mapparentshift')
 
+    //set selected floor variable to new selection
     window.localStorage.setItem('floorSelected', floor)
 
     l = 0
+    //hide other layers and unhide selected floor
     while(l<contp.children.length){
         contp.children[l].style.visibility = "hidden"
 
@@ -1204,6 +1251,7 @@ async function showFloor(floor){
         l++
     }
 
+    //change selector button to match
     prnbtmns = document.getElementById('floorselection')
 
     b = 0
@@ -1214,26 +1262,11 @@ async function showFloor(floor){
 
     prnbtmns.children[floor-1].classList.add('selected')
 
+    //setup floor layer
     await setupMapContainer()
 
+    //update list
     listWashrooms()
-}
-
-async function setupWrFocusButtons(){
-    return
-    elema = document.getElementById('wrbtns')
-
-    p = 0
-    while(p<washroomConstants.length){
-        nb = document.createElement("button")
-
-        nb.innerHTML = washroomConstants[p].room
-
-        nb.setAttribute('onclick', `zoomFr(${washroomConstants[p].room})`)
-
-        elema.appendChild(nb)
-        p++
-    }
 }
 
 async function beginSetup(){
@@ -1253,15 +1286,13 @@ async function setupHome(){
 
     await setupMapContainer()
 
-    await setupWrFocusButtons()
-
-
     await showFloor(1)
 
     await checkForSearchQuery()
 }
 
 async function checkForSearchQuery(){
+    //this is only ever used for when users scan a washroom-specific qr code
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get('rpt');
 
@@ -1274,10 +1305,14 @@ async function checkForSearchQuery(){
 }
 
 async function reportIssue(room){
+    //constant stuff
     const genders = {a:"All gender",f:"Girls",m:"Boys"}
     altgenders = {a:"All+gender",f:"Girls",m:"Boys"}
     v = 0
+
     found = false
+
+    //get washroom variable from room number
     while(v<washroomConstants.length){
         if(washroomConstants[v].room == room){
             found = JSON.parse(JSON.stringify(washroomConstants[v]))
@@ -1287,11 +1322,16 @@ async function reportIssue(room){
 
     if(!found) return alert('An issue occurred while processing your requrest')
     
+    //set header
     document.getElementById('washroomreport').innerHTML = `Rm. ${found.room} - ${genders[found.gender]}`
 
+    //create magic google forms link
     document.getElementById('extbutton').setAttribute('onclick', `location = 'https://docs.google.com/forms/d/e/1FAIpQLSdjEIWMrOZxok97xVB6F32aCAOX46S-5U2H8btVfB5Kei205A/viewform?usp=pp_url&entry.305777253=${found.room}+-+${altgenders[found.gender]}'`)
 
+    //zoom in on room
     zoomFr(room)
+
+    //remove floor changer options
     document.getElementById('listed').style.display = 'none'
     document.getElementById('floorselection').style.display = 'none'
 
@@ -1299,6 +1339,7 @@ async function reportIssue(room){
 }
 
 async function cancelReport(){
+    //if report is cancelled
     document.getElementById('listed').style.display = 'flex'
     document.getElementById('floorselection').style.display = 'flex'
 
@@ -1306,5 +1347,6 @@ async function cancelReport(){
 }
 
 window.addEventListener('resize', e=>{
+    //if window is resized, re-setup map
     setupMapContainer()
 })
